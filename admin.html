@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="robots" content="noindex" />
+  <title>Owner dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="admin">
+  <div id="demo-bar" class="demo-bar" hidden></div>
+
+  <section class="login" id="login" hidden>
+    <form class="login-card" id="login-form" novalidate>
+      <div class="biz-mark" data-initials aria-hidden="true"></div>
+      <h1>Owner sign in</h1>
+      <p data-bizname></p>
+      <div id="login-fields"></div>
+      <p class="form-error" id="login-error" role="alert"></p>
+      <button type="submit" class="btn btn-primary btn-block" id="login-btn">Sign in</button>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <header class="topbar">
+      <div class="topbar-brand">
+        <div class="biz-mark" data-initials aria-hidden="true"></div>
+        <div><h1 data-bizname></h1><small id="today-label"></small></div>
+      </div>
+      <div class="topbar-actions">
+        <a class="btn btn-ghost btn-small" id="view-page" target="_blank" rel="noopener">View booking page</a>
+        <button type="button" class="btn btn-ghost btn-small" id="logout">Sign out</button>
+      </div>
+    </header>
+
+    <main class="dash">
+      <section class="stats" aria-label="Summary">
+        <article class="stat"><h2>Today</h2><p id="s-today">0</p></article>
+        <article class="stat"><h2>Next 7 days</h2><p id="s-week">0</p></article>
+        <article class="stat"><h2>Expected this week</h2><p id="s-revenue">0</p></article>
+        <article class="stat"><h2>Cancelled / no-show (30 days)</h2><p id="s-lost">0</p></article>
+      </section>
+
+      <div class="tabs" role="tablist" aria-label="Dashboard sections">
+        <button role="tab" aria-selected="true" aria-controls="tab-bookings" id="t-bookings">Bookings</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-closed" id="t-closed">Closed days</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-share" id="t-share">Share &amp; QR code</button>
+      </div>
+
+      <section class="panel" id="tab-bookings" role="tabpanel" aria-labelledby="t-bookings">
+        <div class="toolbar">
+          <div class="seg" role="group" aria-label="Which bookings">
+            <button type="button" data-view="today" aria-pressed="true">Today</button>
+            <button type="button" data-view="upcoming" aria-pressed="false">Upcoming</button>
+            <button type="button" data-view="past" aria-pressed="false">Past</button>
+          </div>
+          <label class="sr-only" for="search">Search bookings</label>
+          <input type="search" id="search" placeholder="Search name, phone or ref" />
+          <button type="button" class="btn btn-ghost btn-small" id="export">Export CSV</button>
+        </div>
+        <div id="bk-groups"></div>
+      </section>
+
+      <section class="panel" id="tab-closed" role="tabpanel" aria-labelledby="t-closed" hidden>
+        <div class="cards-2">
+          <form class="card" id="block-form" novalidate>
+            <h2>Close a day</h2>
+            <p>Customers won't be able to book on closed days. Existing bookings stay, so call those customers.</p>
+            <div class="row">
+              <div class="field"><label for="b-day">Date</label><input type="date" id="b-day" required /></div>
+              <div class="field"><label for="b-reason">Reason <span class="opt">optional</span></label><input id="b-reason" placeholder="e.g. Diwali holiday" /></div>
+            </div>
+            <p class="form-error" id="block-error" role="alert"></p>
+            <button type="submit" class="btn btn-primary">Close this day</button>
+          </form>
+          <div class="card">
+            <h2>Upcoming closed days</h2>
+            <ul class="blocked-list" id="blocked-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="tab-share" role="tabpanel" aria-labelledby="t-share" hidden>
+        <div class="cards-2">
+          <div class="card">
+            <h2>Your booking link</h2>
+            <p>Share it on WhatsApp, Instagram and Google Business so customers can book any time.</p>
+            <div class="link-box">
+              <label class="sr-only" for="share-url">Booking link</label>
+              <input id="share-url" readonly />
+              <button type="button" class="btn btn-primary btn-small" id="copy-url">Copy</button>
+            </div>
+            <div class="row" style="margin-top:14px">
+              <a class="btn btn-ghost btn-small" id="share-wa" target="_blank" rel="noopener">Share on WhatsApp</a>
+            </div>
+          </div>
+          <div class="card qr-wrap">
+            <h2>QR code for your counter</h2>
+            <div id="qr" aria-label="QR code for the booking link"></div>
+            <div class="row">
+              <button type="button" class="btn btn-primary btn-small" id="print-poster">Print poster</button>
+              <button type="button" class="btn btn-ghost btn-small" id="download-qr">Download QR</button>
+            </div>
+          </div>
+        </div>
+        <p id="demo-reset-wrap" hidden style="margin-top:20px"><button type="button" class="btn btn-link" id="demo-reset">Reset demo data</button></p>
+      </section>
+    </main>
+  </div>
+
+  <div class="poster" id="poster" aria-hidden="true">
+    <h1 data-bizname></h1>
+    <p>Book your next appointment online</p>
+    <div class="poster-qr" id="poster-qr"></div>
+    <small id="poster-url"></small>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer class="made-by" id="made-by"></footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="js/config.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/admin.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#333333" />
+  <title>Book an appointment</title>
+  <meta name="description" content="Book your appointment online in under a minute." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="customer">
+  <div id="demo-bar" class="demo-bar" hidden></div>
+
+  <div class="shell">
+    <aside class="biz" aria-label="About the business">
+      <div class="biz-mark" id="biz-mark" aria-hidden="true"></div>
+      <h1 id="biz-name"></h1>
+      <p class="biz-tagline" id="biz-tagline"></p>
+      <dl class="biz-facts">
+        <div><dt>Address</dt><dd id="biz-address"></dd></div>
+        <div><dt>Phone</dt><dd><a id="biz-phone"></a></dd></div>
+      </dl>
+      <details class="biz-hours">
+        <summary>Opening hours</summary>
+        <table id="biz-hours"></table>
+      </details>
+    </aside>
+
+    <main class="flow" id="flow" aria-live="polite">
+      <ol class="steps" id="steps" aria-label="Booking steps">
+        <li data-step="service">Service</li>
+        <li data-step="time">Date &amp; time</li>
+        <li data-step="details">Your details</li>
+      </ol>
+
+      <section id="step-service" class="step">
+        <h2>What would you like to book?</h2>
+        <div class="chips" id="categories" role="group" aria-label="Filter by category"></div>
+        <ul class="services" id="services"></ul>
+      </section>
+
+      <section id="step-time" class="step" hidden>
+        <button type="button" class="back" data-go="service">Change service</button>
+        <div class="picked" id="picked-service"></div>
+        <h2>Pick a day</h2>
+        <div class="dates" id="dates" role="listbox" aria-label="Available dates"></div>
+        <h2 class="slots-title">Pick a time <span id="slots-date"></span></h2>
+        <div id="slots" class="slots"></div>
+      </section>
+
+      <section id="step-details" class="step" hidden>
+        <button type="button" class="back" data-go="time">Change time</button>
+        <div class="picked" id="picked-summary"></div>
+        <h2>Your details</h2>
+        <form id="details-form" novalidate>
+          <div class="field">
+            <label for="f-name">Full name</label>
+            <input id="f-name" name="name" autocomplete="name" required />
+            <small class="error"></small>
+          </div>
+          <div class="field">
+            <label for="f-phone">Mobile number</label>
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required />
+            <small class="error"></small>
+          </div>
+          <div class="field">
+            <label for="f-notes">Anything we should know? <span class="opt">optional</span></label>
+            <textarea id="f-notes" name="notes" rows="3"></textarea>
+          </div>
+          <p class="form-error" id="form-error" role="alert"></p>
+          <button type="submit" class="btn btn-primary btn-block" id="confirm-btn">Confirm booking</button>
+        </form>
+      </section>
+
+      <section id="step-done" class="step done" hidden>
+        <div class="tick" aria-hidden="true">
+          <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+        </div>
+        <h2>You're booked</h2>
+        <p class="done-lead" id="done-lead"></p>
+        <dl class="receipt" id="receipt"></dl>
+        <div class="done-actions">
+          <a class="btn btn-primary" id="wa-btn" target="_blank" rel="noopener">Send confirmation on WhatsApp</a>
+          <button type="button" class="btn btn-ghost" id="ics-btn">Add to calendar</button>
+          <button type="button" class="btn btn-link" data-go="service" id="again-btn">Book something else</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="made-by" id="made-by"></footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
